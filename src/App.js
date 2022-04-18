@@ -5,8 +5,13 @@ import limoenen from './assets/limoenen.png';
 import ijsblokjes from './assets/ijsblokjes.jpg';
 import {ReactComponent as ShoppingCart} from './assets/winkelmandje.svg';
 import './App.css';
+import reactDom from 'react-dom';
+import {check} from 'prettier';
 
 function App() {
+    const [messageValue, setMessageValue] = React.useState('');
+    const [checkedTerms, toggleCheckedTerms] = React.useState(false);
+
     return (
         <>
             <nav>
@@ -56,6 +61,44 @@ function App() {
                 water in een plastic vorm te laten bevriezen.'
                 />
             </main>
+            <footer>
+                <div className='form-container'>
+                    <h2>Contactformulier</h2>
+                    <form>
+                        <input
+                            type='text'
+                            placeholder='Typ hier jouw bericht'
+                            name='message'
+                            className={
+                                messageValue.length > 20 ? 'input-error' : ''
+                            }
+                            value={messageValue}
+                            onChange={e => setMessageValue(e.target.value)}
+                        />
+                        {messageValue.length > 20 && (
+                            <p className='error-message'>
+                                Dit bericht is te lang!
+                            </p>
+                        )}
+
+                        <label htmlFor='terms-and-conditions'>
+                            <input
+                                type='checkbox'
+                                name='terms-and-conditions'
+                                id='terms-and-conditions'
+                                checked={checkedTerms}
+                                onChange={() =>
+                                    toggleCheckedTerms(!checkedTerms)
+                                }
+                            />
+                            Ik ga akkoord met de algemene voorwaarden
+                        </label>
+                        <button type='submit' disabled={!checkedTerms}>
+                            Verstuur
+                        </button>
+                    </form>
+                </div>
+            </footer>
         </>
     );
 }
